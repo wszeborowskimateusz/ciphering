@@ -10,3 +10,7 @@
 
 ## Current progress:
 * working on UI - Blackweather
+
+## Workflow:
+> Let's use GitFlow :)
+> https://pl.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
