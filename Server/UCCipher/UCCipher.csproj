@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewDecoder.cs" />
     <Page Include="Cipher.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

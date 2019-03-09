@@ -23,6 +23,9 @@ namespace UCCipher
         public Cipher()
         {
             InitializeComponent();
+            cip = new ViewDecoder(this);
         }
+
+        private ViewDecoder cip;
     }
 }

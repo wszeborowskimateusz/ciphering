@@ -23,6 +23,9 @@ namespace UCFilePicker
         public FilePicker()
         {
             InitializeComponent();
+            fp = new ViewDecoder(this);
         }
+
+        private ViewDecoder fp;
     }
 }
