@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="UCClientPicker.ClientPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UCClientPicker"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+    <Grid Name="MainGrid">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1.000,0.5" StartPoint="0.1,0.5">
+                <GradientStop Color="#FF1A1A1A" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Choose clients" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke"/>
+            <DataGrid Grid.Row="1" Name="DataGrid_listOfClients" Height="Auto" Margin="5,5,5,5" VerticalAlignment="Top" Width="Auto" 
+                      AutoGenerateColumns="False" CanUserAddRows="False" Background="#FF181818">
+                <DataGrid.Resources>
+                    <Style x:Key="CustomCellStyle" TargetType="DataGridCell">
+                        <Setter Property="Foreground" Value="WhiteSmoke"/>
+                        <Setter Property="Background" Value="#FF181818"/>
+                    </Style>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="#FF484848"/>
+                        <Setter Property="Foreground" Value="WhiteSmoke"/>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="#FF181818"/>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Session key">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button x:Name="Button_AddClient" Grid.Row="2" Background="#FF181818" 
+                    Foreground="WhiteSmoke" Width="100" VerticalAlignment="Center" 
+                    HorizontalAlignment="Right" Margin="5,5,5,5" Content="Add Client"/>
+        </Grid>
+    </Grid>
+</UserControl>

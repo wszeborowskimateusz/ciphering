@@ -14,7 +14,6 @@
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -23,7 +22,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Border BorderThickness="1" BorderBrush="Gray" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5,5,5,5"/>
-            <Label Grid.Row="0" Content="Choose a file" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Grid.Row="0" Content="Choose a file" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -31,7 +30,8 @@
                     <ColumnDefinition Width="65"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="TextBox_pathToFile" Grid.Column="0" HorizontalAlignment="Stretch" Height="20" Margin="10,10,10,10" TextWrapping="Wrap" Text="" IsEnabled="False" VerticalAlignment="Stretch"/>
-                <Button x:Name="Button_BrowseFiles" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Content="Browse" Margin="5,5,5,5" Width="50" Height="20" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                <Button x:Name="Button_BrowseFiles" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Content="Browse" 
+                        Background="#FF181818" Foreground="WhiteSmoke" Margin="5,5,5,5" Width="50" Height="20" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
             </Grid>
         </Grid>
     </Grid>

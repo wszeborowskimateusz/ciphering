@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UCCipher"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <Grid Name="MainGrid">
         <Grid.Background>
             <LinearGradientBrush EndPoint="1.000,0.5" StartPoint="0.1,0.5">
@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
@@ -22,7 +23,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Border BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Margin="5,5,5,5"/>
-            <Label Grid.Row="0" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center">Choose a cipher mode</Label>
+            <Label Grid.Row="0" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke">Choose a cipher mode</Label>
             <ComboBox Grid.Row="1" HorizontalAlignment="Center" Width="70" SelectedIndex="0" Margin="5,5,5,10">
                 <ComboBoxItem>ECB</ComboBoxItem>
                 <ComboBoxItem>CBC</ComboBoxItem>
@@ -31,6 +32,15 @@
             </ComboBox>
         </Grid>
         <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="1" BorderBrush="Gray" Grid.RowSpan="2" Margin="5,5,5,5"/>
+            <Label Grid.Row="0" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke">Choose cipher subblock length</Label>
+            <Label Grid.Row="1" FontSize="15" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke">Some control for picking length</Label>
+        </Grid>
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>

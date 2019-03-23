@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Server"
         xmlns:filepicker_control="clr-namespace:UCFilePicker;assembly=UCFilePicker"
         xmlns:cipher_control="clr-namespace:UCCipher;assembly=UCCipher"
+        xmlns:clientpicker_control="clr-namespace:UCClientPicker;assembly=UCClientPicker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="400">
+        Title="MainWindow" Height="250" Width="500">
     <Grid Name="main_container">
         <Grid.Background>
             <LinearGradientBrush EndPoint="1.000,0.5" StartPoint="0.1,0.5">
@@ -22,7 +23,12 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
-            <filepicker_control:FilePicker Name="filepicker_control" VerticalAlignment="Center"></filepicker_control:FilePicker>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <filepicker_control:FilePicker Name="filepicker_control" Grid.Row="0" VerticalAlignment="Center"></filepicker_control:FilePicker>
+            <clientpicker_control:ClientPicker Name="clientpicker_control" Grid.Row="1" VerticalAlignment="Center"></clientpicker_control:ClientPicker>
         </Grid>
         <Grid Grid.Column="1">
             <cipher_control:Cipher Name="cipher_control" VerticalAlignment="Center"></cipher_control:Cipher>
