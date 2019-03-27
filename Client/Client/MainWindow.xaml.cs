@@ -23,6 +23,9 @@ namespace Client
         public MainWindow()
         {
             InitializeComponent();
+
+            TCPServer tCPServer = new TCPServer();
+            Task.Run(() => tCPServer.StartListening());
         }
     }
 }
