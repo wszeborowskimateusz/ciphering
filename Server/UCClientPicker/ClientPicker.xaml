@@ -22,7 +22,7 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Choose clients" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke"/>
+            <Label Grid.Row="0" Content="Choose client" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke"/>
             <DataGrid Grid.Row="1" Name="DataGrid_listOfClients" Height="Auto" Margin="5,5,5,5" VerticalAlignment="Top" Width="Auto" 
                       AutoGenerateColumns="False" CanUserAddRows="False" Background="#FF181818">
                 <DataGrid.Resources>
@@ -41,7 +41,7 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Session key">
+                    <DataGridTemplateColumn Header="Public key">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 
