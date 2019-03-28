@@ -61,6 +61,7 @@
     </Page>
     <Compile Include="AESEncryptor.cs" />
     <Compile Include="AES_KEY_SIZE.cs" />
+    <Compile Include="AES_SUBBLOCK_SIZE.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
