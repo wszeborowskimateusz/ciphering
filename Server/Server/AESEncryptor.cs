@@ -16,13 +16,16 @@ namespace Server
         private RijndaelManaged Aes;
         private CipherMode mode;
         private AES_KEY_SIZE keySize;
+        private AES_SUBBLOCK_SIZE subBlockSize;
 
 
-        public AESEncryptor(CipherMode m, AES_KEY_SIZE kS)
+        public AESEncryptor(CipherMode m, AES_KEY_SIZE kS, AES_SUBBLOCK_SIZE sS)
         {
             Aes = new RijndaelManaged();
-            Aes.FeedbackSize = 8;
+            //I guess this is subblock size
+            Aes.FeedbackSize = (int)sS;
             Aes.Padding = PaddingMode.PKCS7;
+            //Aes.
             Aes.Mode = m;
             Aes.BlockSize = 128;
             Aes.KeySize = (int)kS;
@@ -37,6 +40,7 @@ namespace Server
 
             mode = m;
             keySize = kS;
+            subBlockSize = sS;
         }
 
         ~AESEncryptor()
