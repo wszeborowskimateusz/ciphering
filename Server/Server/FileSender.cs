@@ -44,6 +44,9 @@ namespace Server
 
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
+                            writer.WriteLine(fileName);
+                            writer.Flush();
+
                             writer.WriteLine(fileHeader);
                             writer.Flush();
                         }
