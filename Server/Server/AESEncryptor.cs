@@ -13,10 +13,10 @@ namespace Server
     {
         private byte[] key;
         private byte[] IV;
-        private RijndaelManaged Aes;
-        private CipherMode mode;
-        private AES_KEY_SIZE keySize;
-        private AES_SUBBLOCK_SIZE subBlockSize;
+        public RijndaelManaged Aes { get; }
+        public CipherMode mode { get; }
+        public AES_KEY_SIZE keySize { get; }
+        public AES_SUBBLOCK_SIZE subBlockSize { get; }
 
 
         public AESEncryptor(CipherMode m, AES_KEY_SIZE kS, AES_SUBBLOCK_SIZE sS)
@@ -48,9 +48,14 @@ namespace Server
             Aes.Clear();
         }
 
-        public byte[] Encrypt(String Plain)
+        public byte[] Encrypt(String Plain, byte[] byteArray = null)
         {
-            byte[] plainBytes = Encoding.UTF8.GetBytes(Plain);
+            byte[] plainBytes;
+            if (byteArray == null)
+                plainBytes = Encoding.UTF8.GetBytes(Plain);
+            else
+                plainBytes = byteArray;
+
             byte[] cipherBytes;
 
             using (var encryptor = Aes.CreateEncryptor())

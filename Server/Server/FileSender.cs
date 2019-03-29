@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -8,12 +9,6 @@ using System.Xml;
 
 namespace Server
 {
-    class User
-    {
-        public string Name { get; set; }
-        public RSAEncryptor rsaEncryptor { get; set; }
-    }
-
     class FileSender
     {
         private AESEncryptor aesEncryptor;
@@ -26,9 +21,45 @@ namespace Server
         {
             aesEncryptor = ae;
             listOfUsersToSend = users;
-
         }
 
+        public void SendFile(string fileName, string keyLengthVal, string cypherModeVal, string subBlockLengthVal)
+        {
+            client = new TcpClient(ServerAddress, ServerPort);
+
+            using (NetworkStream stream = client.GetStream())
+            {
+
+                if (File.Exists(fileName))
+                {
+                    using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+                    {
+                        byte[] data = new byte[1024];
+
+                        string fileExtension = Path.GetExtension(fileName);
+
+                        string fileHeader = GenerateXmlHeader(listOfUsersToSend, fileExtension,
+                            ((int)aesEncryptor.keySize).ToString(), aesEncryptor.mode.ToString(),
+                            ((int)aesEncryptor.subBlockSize).ToString(), BitConverter.ToString(aesEncryptor.Aes.Key));
+
+                        using (StreamWriter writer = new StreamWriter(stream))
+                        {
+                            writer.WriteLine(fileHeader);
+                            writer.Flush();
+                        }
+
+                        int numBytesRead;
+                        while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
+                        {
+                            byte[] cipheredData = aesEncryptor.Encrypt(null, data);
+
+                            stream.Write(cipheredData, 0, cipheredData.Length);
+                        }
+
+                    }
+                }
+            }
+        }
 
         public string GenerateXmlHeader(User[] listOfUsers, string fileExtension, string keyLengthVal, string cypherModeVal, string subBlockLengthVal, string sessionKeyVal)
         {
