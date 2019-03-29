@@ -40,7 +40,8 @@ namespace Server
 
                         string fileHeader = GenerateXmlHeader(listOfUsersToSend, fileExtension,
                             ((int)aesEncryptor.keySize).ToString(), aesEncryptor.mode.ToString(),
-                            ((int)aesEncryptor.subBlockSize).ToString(), BitConverter.ToString(aesEncryptor.Aes.Key));
+                            ((int)aesEncryptor.subBlockSize).ToString(), BitConverter.ToString(aesEncryptor.Aes.Key),
+                            Encoding.UTF8.GetString(aesEncryptor.IV));
 
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
@@ -64,7 +65,8 @@ namespace Server
             }
         }
 
-        public string GenerateXmlHeader(User[] listOfUsers, string fileExtension, string keyLengthVal, string cypherModeVal, string subBlockLengthVal, string sessionKeyVal)
+        public string GenerateXmlHeader(User[] listOfUsers, string fileExtension, string keyLengthVal,
+            string cypherModeVal, string subBlockLengthVal, string sessionKeyVal, string IVVal)
         {
             XmlDocument doc = new XmlDocument();
 
@@ -92,21 +94,25 @@ namespace Server
                 XmlElement sessionKey = doc.CreateElement("sessionKey");
                 XmlElement cypherMode = doc.CreateElement("cypherMode");
                 XmlElement subBlockLength = doc.CreateElement("subBlockLength");
+                XmlElement IV = doc.CreateElement("IV");
 
                 XmlText keyLengthText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(keyLengthVal));
                 XmlText sessionKeyText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(sessionKeyVal));
                 XmlText cypherModeText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(cypherModeVal));
                 XmlText subBlockLengthText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(subBlockLengthVal));
+                XmlText IVText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(IVVal));
 
                 keyLength.AppendChild(keyLengthText);
                 sessionKey.AppendChild(sessionKeyText);
                 cypherMode.AppendChild(cypherModeText);
                 subBlockLength.AppendChild(subBlockLengthText);
+                IV.AppendChild(IVText);
 
                 userInfo.AppendChild(keyLength);
                 userInfo.AppendChild(sessionKey);
                 userInfo.AppendChild(cypherMode);
                 userInfo.AppendChild(subBlockLength);
+                userInfo.AppendChild(IV);
 
                 fileHeader.AppendChild(userInfo);
             }
