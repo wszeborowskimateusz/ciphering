@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -10,25 +11,26 @@ namespace Server
     class User
     {
         public string Name { get; set; }
-        public string SessionKey { get; set; }
+        public RSAEncryptor rsaEncryptor { get; set; }
     }
 
     class FileSender
     {
-        private RSAEncryptor rsaEncryptor;
         private AESEncryptor aesEncryptor;
         private User[] listOfUsersToSend;
+        private string ServerAddress = "localhost";
+        private Int32 ServerPort = 13529;
+        private TcpClient client;
 
-        public FileSender(RSAEncryptor re, AESEncryptor ae, User[] users)
+        public FileSender(AESEncryptor ae, User[] users)
         {
-            rsaEncryptor = re;
             aesEncryptor = ae;
             listOfUsersToSend = users;
+
         }
 
 
-
-        public string GenerateXmlHeader(User[] listOfUsers, string fileExtension, string keyLengthVal, string cypherModeVal, string subBlockLengthVal)
+        public string GenerateXmlHeader(User[] listOfUsers, string fileExtension, string keyLengthVal, string cypherModeVal, string subBlockLengthVal, string sessionKeyVal)
         {
             XmlDocument doc = new XmlDocument();
 
@@ -57,10 +59,10 @@ namespace Server
                 XmlElement cypherMode = doc.CreateElement("cypherMode");
                 XmlElement subBlockLength = doc.CreateElement("subBlockLength");
 
-                XmlText keyLengthText = doc.CreateTextNode(rsaEncryptor.Encrypt(keyLengthVal));
-                XmlText sessionKeyText = doc.CreateTextNode(rsaEncryptor.Encrypt(user.SessionKey));
-                XmlText cypherModeText = doc.CreateTextNode(rsaEncryptor.Encrypt(cypherModeVal));
-                XmlText subBlockLengthText = doc.CreateTextNode(rsaEncryptor.Encrypt(subBlockLengthVal));
+                XmlText keyLengthText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(keyLengthVal));
+                XmlText sessionKeyText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(sessionKeyVal));
+                XmlText cypherModeText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(cypherModeVal));
+                XmlText subBlockLengthText = doc.CreateTextNode(user.rsaEncryptor.Encrypt(subBlockLengthVal));
 
                 keyLength.AppendChild(keyLengthText);
                 sessionKey.AppendChild(sessionKeyText);
