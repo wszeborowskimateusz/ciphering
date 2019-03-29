@@ -23,7 +23,7 @@ namespace Server
             listOfUsersToSend = users;
         }
 
-        public void SendFile(string fileName, string keyLengthVal, string cypherModeVal, string subBlockLengthVal)
+        public void SendFile(string fileName)
         {
             client = new TcpClient(ServerAddress, ServerPort);
 
@@ -44,21 +44,21 @@ namespace Server
 
                         using (StreamWriter writer = new StreamWriter(stream))
                         {
-                            writer.WriteLine(fileName);
+                            writer.WriteLine(Path.GetFileName(fileName));
                             writer.Flush();
 
                             writer.WriteLine(fileHeader);
                             writer.Flush();
+
+
+                            int numBytesRead;
+                            while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
+                            {
+                                byte[] cipheredData = aesEncryptor.Encrypt(null, data);
+
+                                stream.Write(cipheredData, 0, cipheredData.Length);
+                            }
                         }
-
-                        int numBytesRead;
-                        while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
-                        {
-                            byte[] cipheredData = aesEncryptor.Encrypt(null, data);
-
-                            stream.Write(cipheredData, 0, cipheredData.Length);
-                        }
-
                     }
                 }
             }

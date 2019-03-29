@@ -44,24 +44,26 @@ namespace Client
             {
                 fileName = reader.ReadLine();
                 fileHeader = reader.ReadLine();
-            }
 
-            fileName = outputFileLocation + "\\" + fileName;
 
-            using (StreamWriter sw = File.CreateText(fileName))
-            {
-                sw.WriteLine(fileHeader);
-            }
+                fileName = outputFileLocation + "\\" + fileName;
 
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Open)))
-            {
-                int numBytesRead;
-                while ((numBytesRead = stream.Read(data, 0, data.Length)) > 0)
+                using (StreamWriter sw = File.CreateText(fileName))
                 {
-                    writer.Write(data, 0, numBytesRead);
-                }               
-            }
+                    sw.WriteLine(fileHeader);
+                    sw.Close();
 
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Append)))
+                    {
+                        byte[] data = new byte[1024];
+                        int numBytesRead;
+                        while ((numBytesRead = stream.Read(data, 0, data.Length)) > 0)
+                        {
+                            writer.Write(data, 0, numBytesRead);
+                        }
+                    }
+                }
+            }
             stream.Close();
         }
     }
