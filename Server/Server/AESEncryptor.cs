@@ -12,7 +12,7 @@ namespace Server
     class AESEncryptor
     {
         private byte[] key;
-        private byte[] IV;
+        public byte[] IV { get; }
         public RijndaelManaged Aes { get; }
         public CipherMode mode { get; }
         public AES_KEY_SIZE keySize { get; }
@@ -25,7 +25,7 @@ namespace Server
             //I guess this is subblock size
             Aes.FeedbackSize = (int)sS;
             Aes.Padding = PaddingMode.PKCS7;
-            //Aes.
+
             Aes.Mode = m;
             Aes.BlockSize = 128;
             Aes.KeySize = (int)kS;
@@ -40,6 +40,33 @@ namespace Server
 
             mode = m;
             keySize = kS;
+            subBlockSize = sS;
+        }
+
+        //This is for ciphering clients private key
+        public AESEncryptor(CipherMode m,  AES_SUBBLOCK_SIZE sS, byte[] keyVal)
+        {
+
+            Aes = new RijndaelManaged();
+            //I guess this is subblock size
+            Aes.FeedbackSize = (int)sS;
+            Aes.Padding = PaddingMode.PKCS7;
+
+            Aes.Mode = m;
+            Aes.BlockSize = 128;
+            Aes.KeySize = 256;
+            
+            Aes.Key = keyVal;
+            Aes.GenerateIV();
+
+            key = new byte[256 / 8];
+            IV = new byte[256 / 8];
+
+            Aes.Key.CopyTo(key, 0);
+            Aes.IV.CopyTo(IV, 0);
+
+            mode = m;
+            keySize = AES_KEY_SIZE.KEY_256;
             subBlockSize = sS;
         }
 

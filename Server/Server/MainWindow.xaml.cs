@@ -24,21 +24,24 @@ namespace Server
         {
             InitializeComponent();
 
-            User[] users = {
-                new User() {
-                    Name = "client1",
-                    rsaEncryptor = new RSAEncryptor("C:\\Users\\Mateusz\\Desktop\\BSK_Testy\\keys\\Public\\client1_public.xml")
-                },
-                new User() {
-                    Name = "client2",
-                    rsaEncryptor = new RSAEncryptor("C:\\Users\\Mateusz\\Desktop\\BSK_Testy\\keys\\Public\\client2_public.xml")
-                }
-            };
+            RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
+                "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user4", "alamakota");
 
-            FileSender fileSender = new FileSender(new AESEncryptor(System.Security.Cryptography.CipherMode.CBC, 
-                AES_KEY_SIZE.KEY_128, AES_SUBBLOCK_SIZE.SUBBLOCK_128), users);
+            //User[] users = {
+            //    new User() {
+            //        Name = "client1",
+            //        rsaEncryptor = new RSAEncryptor("C:\\Users\\Mateusz\\Desktop\\BSK_Testy\\keys\\Public\\client1_public.xml")
+            //    },
+            //    new User() {
+            //        Name = "client2",
+            //        rsaEncryptor = new RSAEncryptor("C:\\Users\\Mateusz\\Desktop\\BSK_Testy\\keys\\Public\\client2_public.xml")
+            //    }
+            //};
 
-            fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\Screeny V2\\Przechwytywanie.PNG");
+            //FileSender fileSender = new FileSender(new AESEncryptor(System.Security.Cryptography.CipherMode.CBC, 
+            //    AES_KEY_SIZE.KEY_128, AES_SUBBLOCK_SIZE.SUBBLOCK_128), users);
+
+            //fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\Screeny V2\\Przechwytywanie.PNG");
 
         }
     }
