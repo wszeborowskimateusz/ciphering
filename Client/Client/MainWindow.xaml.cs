@@ -26,6 +26,10 @@ namespace Client
 
             TCPServer tCPServer = new TCPServer();
             Task.Run(() => tCPServer.StartListening());
+
+            FileDecoder fileDecoder = new FileDecoder();
+            //fileDecoder.GetFileHeader("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\Przechwytywanie.PNG");
+            Console.WriteLine(fileDecoder.DecryptPrivateKey("user5", "alamakota"));
         }
     }
 }

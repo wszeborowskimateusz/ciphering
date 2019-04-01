@@ -12,12 +12,12 @@ namespace Client
     {
         private RSACryptoServiceProvider csp;
 
-        public RSADecryptor(string privateKeyFileName)
+        public RSADecryptor(string xmlString)
         {
             csp = new RSACryptoServiceProvider();
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(privateKeyFileName);
+            doc.LoadXml(xmlString);
             string xmlcontents = doc.InnerXml;
             csp.FromXmlString(xmlcontents);
             var privKey = csp.ExportParameters(true);

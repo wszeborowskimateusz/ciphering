@@ -29,7 +29,7 @@ namespace Server
 
         public string Encrypt(string messaege)
         {
-            var bytesPlainTextData = Encoding.Unicode.GetBytes(messaege);
+            var bytesPlainTextData = Encoding.UTF8.GetBytes(messaege);
 
             var bytesCypherText = csp.Encrypt(bytesPlainTextData, false);
 
@@ -51,9 +51,9 @@ namespace Server
             var privateKey = csp.ToXmlString(true);
 
             AESEncryptor encryptor = new AESEncryptor(CipherMode.CBC, AES_SUBBLOCK_SIZE.SUBBLOCK_128, passwordHash);
-            var encryptedPrivateKey = Encoding.UTF8.GetString(encryptor.Encrypt(privateKey));
+            var encryptedPrivateKey = Convert.ToBase64String(encryptor.Encrypt(privateKey));
 
-            encryptedPrivateKey = Encoding.UTF8.GetString(encryptor.IV) + "<END_OF_IV>" + encryptedPrivateKey;
+            encryptedPrivateKey = Convert.ToBase64String(encryptor.IV) + "<END_OF_IV>" + encryptedPrivateKey;
 
             File.WriteAllText(privateKeyLocation + "\\" + userName + "_private.xml", encryptedPrivateKey);
         }

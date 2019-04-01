@@ -33,7 +33,7 @@ namespace Server
             Aes.GenerateIV();
 
             key = new byte[((int)kS) / 8];
-            IV = new byte[((int)kS) / 8];
+            IV = new byte[Aes.BlockSize / 8];
 
             Aes.Key.CopyTo(key, 0);
             Aes.IV.CopyTo(IV, 0);
@@ -60,7 +60,7 @@ namespace Server
             Aes.GenerateIV();
 
             key = new byte[256 / 8];
-            IV = new byte[256 / 8];
+            IV = new byte[Aes.BlockSize/ 8];
 
             Aes.Key.CopyTo(key, 0);
             Aes.IV.CopyTo(IV, 0);
