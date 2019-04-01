@@ -33,7 +33,7 @@ namespace Client
             try
             {
                 var bytesPlainTextData = csp.Decrypt(bytesCypherText, false);
-                plainTextData = System.Text.Encoding.Unicode.GetString(bytesPlainTextData);
+                plainTextData = Encoding.UTF8.GetString(bytesPlainTextData);
             }
             catch (Exception e)
             {

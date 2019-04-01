@@ -40,8 +40,8 @@ namespace Server
 
                         string fileHeader = GenerateXmlHeader(listOfUsersToSend, fileExtension,
                             ((int)aesEncryptor.keySize).ToString(), aesEncryptor.mode.ToString(),
-                            ((int)aesEncryptor.subBlockSize).ToString(), BitConverter.ToString(aesEncryptor.Aes.Key),
-                            Encoding.UTF8.GetString(aesEncryptor.IV));
+                            ((int)aesEncryptor.subBlockSize).ToString(), Convert.ToBase64String(aesEncryptor.Aes.Key),
+                            Convert.ToBase64String(aesEncryptor.IV));
 
                         using (StreamWriter writer = new StreamWriter(stream))
                         {

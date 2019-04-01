@@ -30,9 +30,8 @@ namespace Client
             FileDecoder fileDecoder = new FileDecoder();
             //fileDecoder.GetFileHeader("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\Przechwytywanie.PNG");
             // Console.WriteLine(fileDecoder.DecryptPrivateKey("user5", "alamakota"));
-            var users = fileDecoder.getListOfUsersFromFileHeader(fileDecoder.GetFileHeader("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\Przechwytywanie.PNG"));
-            foreach (var user in users)
-                Console.WriteLine(user);
+            var users = fileDecoder.GetAesFromFileHeader(fileDecoder.GetFileHeader("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\CV-Photo.JPG"), "user5", "alamakota");
+            
         }
     }
 }
