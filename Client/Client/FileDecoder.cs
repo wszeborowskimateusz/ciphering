@@ -18,6 +18,26 @@ namespace Client
 
         }
 
+        public string[] getListOfUsersFromFileHeader(XmlDocument fileHeader)
+        {
+            var users = fileHeader.ChildNodes.Item(0).ChildNodes.Item(0);
+
+            string[] result = new string[users.ChildNodes.Count]; 
+
+            for(int i = 0; i < users.ChildNodes.Count; i++)
+            {
+                result[i] = users.ChildNodes.Item(i).InnerText;
+            }
+
+            return result;
+        }
+
+        public void GetAesFromFileHeader(XmlDocument fileHeader, string userName, string password)
+        {
+            var users = fileHeader.ChildNodes.Item(0);
+
+        } 
+
         public XmlDocument GetFileHeader(string fileName)
         {
             String header = "";
