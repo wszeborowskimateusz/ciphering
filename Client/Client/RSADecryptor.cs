@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -15,7 +16,7 @@ namespace Client
         public RSADecryptor(string xmlString)
         {
             csp = new RSACryptoServiceProvider();
-
+            xmlString = Regex.Replace(xmlString, @"[^\u0000-\u007F]+", string.Empty);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlString);
             string xmlcontents = doc.InnerXml;

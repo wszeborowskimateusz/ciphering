@@ -18,12 +18,41 @@ namespace Client
 
         }
 
-        public void DecryptFile(string fileName, string targetFile)
+        public void DecryptFile(string fileName, string targetFile, string userName, string password)
         {
-            using (StreamReader sr = new StreamReader(fileName))
+            XmlDocument fileHeader = GetFileHeader(fileName);
+            string fileExtension = GetFileExtensionFromFileHeader(fileHeader);
+            AESDecryptor decryptor = GetAesFromFileHeader(fileHeader, userName, password);
+
+            DecryptFile(fileName, targetFile, fileExtension, decryptor);
+        }
+
+        public void DecryptFile(string fileName, string targetFile, string fileExtension, AESDecryptor decryptor)
+        {
+            if (File.Exists(fileName))
             {
-                //skip header
-                sr.ReadLine();
+                using (StreamReader sr = new StreamReader(fileName))
+                {
+                    //skip header
+                    sr.ReadLine();
+                    sr.Close();
+                    using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+                    {
+                        byte[] data = new byte[1024];
+
+                        using (BinaryWriter writer = new BinaryWriter(File.Open(targetFile + fileExtension, FileMode.Create)))
+                        {
+                            int numBytesRead;
+                            while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
+                            {
+                                byte[] decryptedData = decryptor.Decrypt(data);
+
+                                writer.Write(decryptedData, 0, decryptedData.Length);
+                            }
+                        }
+
+                    }
+                }
             }
         }
 
@@ -39,6 +68,11 @@ namespace Client
             }
 
             return result;
+        }
+
+        public string GetFileExtensionFromFileHeader(XmlDocument fileHeader)
+        {
+            return fileHeader.ChildNodes.Item(0).Attributes.Item(0).InnerText;
         }
 
         public AESDecryptor GetAesFromFileHeader(XmlDocument fileHeader, string userName, string password)
@@ -92,6 +126,9 @@ namespace Client
             }
 
             Console.WriteLine("keyLength: {0}\nsessionKey: {1}\ncypherMode: {2}\nsubBlock: {3}\nIV: {4}", keyLength, sessionKey, cypherMode, subBlockLength, IV);
+
+            var keyBytes = Convert.FromBase64String(sessionKey);
+            var IVBytes = Convert.FromBase64String(IV);
 
             AESDecryptor aesDecryptor = new AESDecryptor(cipherMode, ConvertNumberToKeySize(keyLength), ConvertNumberToSubBlockSize(keyLength),
                 Convert.FromBase64String(sessionKey), Convert.FromBase64String(IV));

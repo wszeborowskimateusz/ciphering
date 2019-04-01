@@ -50,6 +50,8 @@ namespace Server
 
             var privateKey = csp.ToXmlString(true);
 
+            File.WriteAllText("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\PrivateNotCiphered" + "\\" + userName + "_private.xml", privateKey);
+
             AESEncryptor encryptor = new AESEncryptor(CipherMode.CBC, AES_SUBBLOCK_SIZE.SUBBLOCK_128, passwordHash);
             var encryptedPrivateKey = Convert.ToBase64String(encryptor.Encrypt(privateKey));
 

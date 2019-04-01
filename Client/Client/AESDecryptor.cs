@@ -22,7 +22,7 @@ namespace Client
             Aes = new RijndaelManaged();
 
             Aes.FeedbackSize = (int)sS;
-            Aes.Padding = PaddingMode.PKCS7;
+            Aes.Padding = PaddingMode.Zeros;
 
             Aes.Mode = m;
             Aes.BlockSize = 128;
@@ -45,15 +45,24 @@ namespace Client
         {
             byte[] plainBytes;
             using (var decryptor = Aes.CreateDecryptor())
-            using (var msEncrypt = new MemoryStream(cipherBytes))
-            using (var csEncrypt = new CryptoStream(msEncrypt, decryptor, CryptoStreamMode.Read))
-            using (var br = new BinaryReader(csEncrypt, Encoding.UTF8))
             {
-                //csEncrypt.FlushFinalBlock();
-                plainBytes = br.ReadBytes(cipherBytes.Length);
+                using (var msEncrypt = new MemoryStream(cipherBytes))
+                {
+                    using (var csEncrypt = new CryptoStream(msEncrypt, decryptor, CryptoStreamMode.Read))
+                    //using (var br = new BinaryReader(csEncrypt, Encoding.UTF8))
+                    {
+                        plainBytes = new byte[cipherBytes.Length];
+                        //
+                        csEncrypt.Read(plainBytes, 0, plainBytes.Length);
+                        //csEncrypt.Close();
+                        //csEncrypt.FlushFinalBlock();
+                        //plainBytes = msEncrypt.ToArray();
 
-                //Console.WriteLine("Decrypted plain text is " + BitConverter.ToString(plainBytes));
+                        //Console.WriteLine("Decrypted plain text is " + BitConverter.ToString(plainBytes));
+                    }
+                }
             }
+          
 
             return plainBytes;
         }

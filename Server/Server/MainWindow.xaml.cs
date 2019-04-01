@@ -27,6 +27,9 @@ namespace Server
             RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
                 "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user5", "alamakota");
 
+            RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
+                "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user4", "alamakota");
+
             User[] users = {
                 new User() {
                     Name = "user4",

@@ -24,7 +24,7 @@ namespace Server
             Aes = new RijndaelManaged();
             //I guess this is subblock size
             Aes.FeedbackSize = (int)sS;
-            Aes.Padding = PaddingMode.PKCS7;
+            Aes.Padding = PaddingMode.Zeros;
 
             Aes.Mode = m;
             Aes.BlockSize = 128;
@@ -50,7 +50,7 @@ namespace Server
             Aes = new RijndaelManaged();
             //I guess this is subblock size
             Aes.FeedbackSize = (int)sS;
-            Aes.Padding = PaddingMode.PKCS7;
+            Aes.Padding = PaddingMode.Zeros;
 
             Aes.Mode = m;
             Aes.BlockSize = 128;
@@ -86,17 +86,22 @@ namespace Server
             byte[] cipherBytes;
 
             using (var encryptor = Aes.CreateEncryptor())
-            using (var msEncrypt = new MemoryStream())
-            using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-            using (var bw = new BinaryWriter(csEncrypt, Encoding.UTF8))
             {
-                bw.Write(plainBytes);
-                bw.Close();
+                using (var msEncrypt = new MemoryStream()) {
+                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    //using (var bw = new BinaryWriter(csEncrypt, Encoding.UTF8))
+                    {
+                        csEncrypt.Write(plainBytes, 0, plainBytes.Length);
+                        //csEncrypt.Close();
+                        csEncrypt.FlushFinalBlock();
+                        cipherBytes = msEncrypt.ToArray();
 
-                cipherBytes = msEncrypt.ToArray();
-
-                //Console.WriteLine("Cipher text is " + BitConverter.ToString(cipherBytes));
+                        //Console.WriteLine("Cipher text is " + BitConverter.ToString(cipherBytes));
+                    }
+                }
+                
             }
+            
 
             return cipherBytes;
         }
