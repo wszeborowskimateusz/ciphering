@@ -47,7 +47,7 @@ namespace Server
             FileSender fileSender = new FileSender(new AESEncryptor(System.Security.Cryptography.CipherMode.CBC,
                 AES_KEY_SIZE.KEY_128, AES_SUBBLOCK_SIZE.SUBBLOCK_128), users);
 
-            fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\TestFiles\\video.mp4");
+            fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\TestFiles\\test.jpg");
 
         }
     }

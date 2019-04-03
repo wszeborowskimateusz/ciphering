@@ -28,8 +28,8 @@ namespace Client
             Task.Run(() => tCPServer.StartListening());
 
             FileDecoder fileDecoder = new FileDecoder();
-            fileDecoder.DecryptFile("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\video.mp4",
-               "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFilesDecrypted\\video_bad_password", "user5", "alamakota1");
+            fileDecoder.DecryptFile("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFiles\\test.jpg",
+               "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\OutputFilesDecrypted\\testCorrect", "user5", "alamakota");
         }
     }
 }
