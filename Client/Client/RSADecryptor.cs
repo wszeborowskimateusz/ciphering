@@ -18,13 +18,24 @@ namespace Client
             csp = new RSACryptoServiceProvider();
             xmlString = Regex.Replace(xmlString, @"[^\u0000-\u007F]+", string.Empty);
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(xmlString);
-            string xmlcontents = doc.InnerXml;
-            csp.FromXmlString(xmlcontents);
-            var privKey = csp.ExportParameters(true);
+            try
+            {
+                doc.LoadXml(xmlString);
+                string xmlcontents = doc.InnerXml;
+                csp.FromXmlString(xmlcontents);
+
+                var privKey = csp.ExportParameters(true);
 
 
-            csp.ImportParameters(privKey);
+                csp.ImportParameters(privKey);
+            }
+            catch (Exception e)
+            {
+                csp = new RSACryptoServiceProvider(2048);
+            }
+            
+            
+            
         }
 
         public string Decrypt(string message)

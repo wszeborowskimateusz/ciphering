@@ -12,7 +12,7 @@ namespace Client
     {
         private byte[] key;
         private byte[] IV;
-        private RijndaelManaged Aes;
+        public RijndaelManaged Aes;
         private CipherMode mode;
         private AES_KEY_SIZE keySize;
         private AES_SUBBLOCK_SIZE subBlockSize;
@@ -44,27 +44,24 @@ namespace Client
         public byte[] Decrypt(byte[] cipherBytes)
         {
             byte[] plainBytes;
-            using (var decryptor = Aes.CreateDecryptor())
+            int count = 0;
+            using (var decryptor = Aes.CreateDecryptor(Aes.Key, Aes.IV))
             {
                 using (var msEncrypt = new MemoryStream(cipherBytes))
                 {
                     using (var csEncrypt = new CryptoStream(msEncrypt, decryptor, CryptoStreamMode.Read))
-                    //using (var br = new BinaryReader(csEncrypt, Encoding.UTF8))
                     {
                         plainBytes = new byte[cipherBytes.Length];
-                        //
-                        csEncrypt.Read(plainBytes, 0, plainBytes.Length);
-                        //csEncrypt.Close();
-                        //csEncrypt.FlushFinalBlock();
-                        //plainBytes = msEncrypt.ToArray();
+                        
+                        count = csEncrypt.Read(plainBytes, 0, plainBytes.Length);
 
-                        //Console.WriteLine("Decrypted plain text is " + BitConverter.ToString(plainBytes));
                     }
                 }
             }
-          
 
-            return plainBytes;
+            byte[] returnval = new byte[count];
+            Array.Copy(plainBytes, returnval, count);
+            return returnval;
         }
 
     }

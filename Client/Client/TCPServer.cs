@@ -45,26 +45,59 @@ namespace Client
                 fileName = reader.ReadLine();
                 fileHeader = reader.ReadLine();
 
-
+                string headerFileName = outputFileLocation + "\\" + fileName + ".header";
                 fileName = outputFileLocation + "\\" + fileName;
 
-                using (StreamWriter sw = File.CreateText(fileName))
+                using (StreamWriter sw = File.CreateText(headerFileName))
                 {
                     sw.WriteLine(fileHeader);
                     sw.Close();
-
-                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Append)))
+                }
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                {
+                    byte[] data = new byte[1024];
+                    int numBytesRead;
+                    while ((numBytesRead = stream.Read(data, 0, data.Length)) > 0)
                     {
-                        byte[] data = new byte[1024];
-                        int numBytesRead;
-                        while ((numBytesRead = stream.Read(data, 0, data.Length)) > 0)
-                        {
-                            writer.Write(data, 0, numBytesRead);
-                        }
+                        writer.Write(data, 0, numBytesRead);
                     }
                 }
+
             }
             stream.Close();
         }
+
+
+        //    private void ProcessClient(NetworkStream stream)
+        //    {
+        //        string fileName = "";
+        //        string fileHeader = "";
+        //        using (StreamReader reader = new StreamReader(stream))
+        //        {
+        //            fileName = reader.ReadLine();
+        //            fileHeader = reader.ReadLine();
+
+
+        //            fileName = outputFileLocation + "\\" + fileName;
+
+        //            using (StreamWriter sw = File.CreateText(fileName))
+        //            {
+        //                sw.WriteLine(fileHeader);
+        //                sw.Close();
+
+        //                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Append)))
+        //                {
+        //                    byte[] data = new byte[1024];
+        //                    int numBytesRead;
+        //                    while ((numBytesRead = stream.Read(data, 0, data.Length)) > 0)
+        //                    {
+        //                        writer.Write(data, 0, numBytesRead);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        stream.Close();
+        //    }
+        //}
     }
 }

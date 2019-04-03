@@ -24,11 +24,14 @@ namespace Server
         {
             InitializeComponent();
 
-            RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
-                "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user5", "alamakota");
+            //RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
+            //    "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user1", "alamakota");
 
-            RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
-                "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user4", "alamakota");
+            //RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
+            //    "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user2", "alamakota");
+
+            //RSAEncryptor.GenerateKeyPair("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Public",
+            //    "C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\keys\\Private", "user3", "alamakota");
 
             User[] users = {
                 new User() {
@@ -44,7 +47,7 @@ namespace Server
             FileSender fileSender = new FileSender(new AESEncryptor(System.Security.Cryptography.CipherMode.CBC,
                 AES_KEY_SIZE.KEY_128, AES_SUBBLOCK_SIZE.SUBBLOCK_128), users);
 
-            fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\CV\\CV-Photo.JPG");
+            fileSender.SendFile("C:\\Users\\Mateusz\\Desktop\\BSK_projekty\\Ciphering\\TestFiles\\video.mp4");
 
         }
     }

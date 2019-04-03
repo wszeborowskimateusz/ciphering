@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -60,6 +61,61 @@ namespace Server
                                 stream.Write(cipheredData, 0, cipheredData.Length);
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        //Alternative method
+        public void FileEncrypt(string inputFile)
+        {
+            client = new TcpClient(ServerAddress, ServerPort);
+
+            using (NetworkStream stream = client.GetStream())
+            {
+                //create a buffer (1mb) so only this amount will allocate in the memory and not the whole file
+                byte[] buffer = new byte[1048576];
+                int read;
+                
+                string fileExtension = Path.GetExtension(inputFile);
+
+                string fileHeader = GenerateXmlHeader(listOfUsersToSend, fileExtension,
+                    ((int)aesEncryptor.keySize).ToString(), aesEncryptor.mode.ToString(),
+                    ((int)aesEncryptor.subBlockSize).ToString(), Convert.ToBase64String(aesEncryptor.Aes.Key),
+                    Convert.ToBase64String(aesEncryptor.IV));
+                var fileHeaderLength = Encoding.UTF8.GetByteCount(fileHeader);
+
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine(Path.GetFileName(inputFile));
+                    writer.Flush();
+
+                    writer.WriteLine(fileHeader);
+                    writer.Flush();
+                    //writer.Close();
+
+
+                    CryptoStream cs = new CryptoStream(stream, aesEncryptor.Aes.CreateEncryptor(), CryptoStreamMode.Write);
+
+                    FileStream fsIn = new FileStream(inputFile, FileMode.Open);
+
+                    try
+                    {
+                        while ((read = fsIn.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            cs.Write(buffer, 0, read);
+                        }
+
+                        fsIn.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+                    finally
+                    {
+                        cs.Close();
+                        stream.Close();
                     }
                 }
             }

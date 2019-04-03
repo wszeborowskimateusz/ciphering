@@ -85,7 +85,7 @@ namespace Server
 
             byte[] cipherBytes;
 
-            using (var encryptor = Aes.CreateEncryptor())
+            using (var encryptor = Aes.CreateEncryptor(Aes.Key, Aes.IV))
             {
                 using (var msEncrypt = new MemoryStream()) {
                     using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))

@@ -20,7 +20,8 @@ namespace Client
 
         public void DecryptFile(string fileName, string targetFile, string userName, string password)
         {
-            XmlDocument fileHeader = GetFileHeader(fileName);
+            string headerFileName = fileName + ".header";
+            XmlDocument fileHeader = GetFileHeader(headerFileName);
             string fileExtension = GetFileExtensionFromFileHeader(fileHeader);
             AESDecryptor decryptor = GetAesFromFileHeader(fileHeader, userName, password);
 
@@ -31,30 +32,79 @@ namespace Client
         {
             if (File.Exists(fileName))
             {
-                using (StreamReader sr = new StreamReader(fileName))
+                using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
                 {
-                    //skip header
-                    sr.ReadLine();
-                    sr.Close();
-                    using (BinaryReader reader = new BinaryReader(File.Open(fileName, FileMode.Open)))
+                    byte[] data = new byte[1024];
+
+
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(targetFile + fileExtension, FileMode.Create)))
                     {
-                        byte[] data = new byte[1024];
-
-                        using (BinaryWriter writer = new BinaryWriter(File.Open(targetFile + fileExtension, FileMode.Create)))
+                        int numBytesRead;
+                        while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
                         {
-                            int numBytesRead;
-                            while ((numBytesRead = reader.Read(data, 0, data.Length)) > 0)
-                            {
-                                byte[] decryptedData = decryptor.Decrypt(data);
+                            byte[] decryptedData = decryptor.Decrypt(data);
 
-                                writer.Write(decryptedData, 0, decryptedData.Length);
-                            }
+                            writer.Write(decryptedData, 0, decryptedData.Length);
                         }
-
                     }
+
                 }
             }
         }
+
+        //public void FileDecrypt(string inputFile, string outputFile, string fileExtension, AESDecryptor decryptor)
+        //{
+            
+
+        //    int read;
+        //    byte[] buffer = new byte[1048576];
+        //    using (StreamReader sr = new StreamReader(inputFile))
+        //    {
+        //        //skip header
+        //        var header = sr.ReadLine();
+        //        var headerLength = Encoding.UTF8.GetBytes(header).Length;
+        //        sr.Close();
+
+        //        FileStream fsCrypt = new FileStream(inputFile, FileMode.Open);
+
+        //        CryptoStream cs = new CryptoStream(fsCrypt, decryptor.Aes.CreateDecryptor(), CryptoStreamMode.Read);
+
+        //        FileStream fsOut = new FileStream(outputFile + fileExtension, FileMode.Create);
+
+        //        byte[] skipHeader = new byte[headerLength];
+        //        cs.Read(skipHeader, 0, skipHeader.Length);
+
+        //        try
+        //        {
+        //            while ((read = cs.Read(buffer, 0, buffer.Length)) > 0)
+        //            {
+        //                fsOut.Write(buffer, 0, read);
+        //            }
+        //        }
+        //        catch (CryptographicException ex_CryptographicException)
+        //        {
+        //            Console.WriteLine("CryptographicException error: " + ex_CryptographicException.Message);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine("Error: " + ex.Message);
+        //        }
+
+        //        try
+        //        {
+        //            cs.Close();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine("Error by closing CryptoStream: " + ex.Message);
+        //        }
+        //        finally
+        //        {
+        //            fsOut.Close();
+        //            fsCrypt.Close();
+        //        }
+        //    }
+        //}
 
         public string[] GetListOfUsersFromFileHeader(XmlDocument fileHeader)
         {
@@ -129,9 +179,17 @@ namespace Client
 
             var keyBytes = Convert.FromBase64String(sessionKey);
             var IVBytes = Convert.FromBase64String(IV);
-
-            AESDecryptor aesDecryptor = new AESDecryptor(cipherMode, ConvertNumberToKeySize(keyLength), ConvertNumberToSubBlockSize(keyLength),
-                Convert.FromBase64String(sessionKey), Convert.FromBase64String(IV));
+            AESDecryptor aesDecryptor;
+            Byte[] randomIV = new Byte[16];
+            Byte[] randomKey = new Byte[16];
+            Random rnd = new Random();
+            rnd.NextBytes(randomKey);
+            rnd.NextBytes(randomIV);
+            if (sessionKey != "")
+                aesDecryptor = new AESDecryptor(cipherMode, ConvertNumberToKeySize(keyLength), ConvertNumberToSubBlockSize(keyLength),
+                    Convert.FromBase64String(sessionKey), Convert.FromBase64String(IV));
+            else
+                aesDecryptor = new AESDecryptor(CipherMode.CBC, AES_KEY_SIZE.KEY_128, AES_SUBBLOCK_SIZE.SUBBLOCK_128, randomKey, randomIV);
 
             return aesDecryptor;
 
