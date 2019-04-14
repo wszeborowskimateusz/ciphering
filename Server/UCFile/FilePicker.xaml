@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="UCFilePicker.FilePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UCFilePicker"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+    <Grid Name="MainGrid">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="1.000,0.5" StartPoint="0.1,0.5">
+                <GradientStop Color="#FF1A1A1A" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="1" BorderBrush="Gray" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="5,5,5,5"/>
+            <Label Grid.Row="0" Content="Choose a file" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="WhiteSmoke"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="65"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="TextBox_pathToFile" Grid.Column="0" HorizontalAlignment="Stretch" Height="20" Margin="10,10,10,10" TextWrapping="Wrap" Text="" IsEnabled="False" VerticalAlignment="Stretch"/>
+                <Button x:Name="Button_BrowseFiles" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Content="Browse" 
+                        Background="#FF181818" Foreground="WhiteSmoke" Margin="5,5,5,5" Width="50" Height="20" VerticalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
