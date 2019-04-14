@@ -8,9 +8,6 @@
 * the application should use UDP protocol to transfer files
 * the application should use the RSA algorithm for handling session key
 
-## Current progress:
-* working on UI - Blackweather
-
 ## Workflow:
 > Let's use GitFlow :)
 > https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
